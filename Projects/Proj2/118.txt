@@ -1,0 +1,19 @@
+bandwidth - the range of frequencies that a channel allows
+	get this by subtracting the maximum Hz - minimum Hz
+	Ex: If the 0Hz is allowed, and the max is 1Hz, then 1-0 = 1. Bandiwdth is 1Hz.
+frequency is 1/T
+w_o is 2pi/T
+
+
+5-bit errors -> exactly five bits have been flipped in the result
+EX: input of length n, n + 16 choose 5. (16 is the amount of bits in the crc, it's the highest exponent)
+
+only one flag will be called at a time
+
+last one (-p) in project
+the generator function is even, so it is divisible by x+1
+it should not have any 5-bit errors, can just hard-code it to be 0
+
+ethernet only detects packet collisions - it doesnt use ACKS
+therefore if a packet is completely lost, Ethernet won't know - that's why its "semi-reliable" instead of quasi-reliable
+2B - H must enter promiscuous mode in order to pick up the packet

@@ -1,0 +1,67 @@
+***try testing on the original "copy" folder now, and make sure to use the same container for both terminal windows***
+
+Dockerfile - creates the docker image (think of it like a virtual machne)
+sudo docker ps -a (shows the containers on the computer)
+ssudo docker run always opens a new container in an image, need to update the files inside
+sudo docker images - shows all images
+sudo doocker rm to remove a container
+
+sudo docker build -f Dockerfile -t proj2:proj2 . (creates the Docker image)
+sudo docker run  -it --privileged --name proj2container proj2:proj2 (names the container as proj2container)
+	#WRITE DOWN THE ID HERE FOR REFERENCE 20b936...
+sudo docker run -it --privileged proj2container bash (open the container)
+
+sudo docker exec -it --privileged hithere bash
+	# USE THIS TO OPEN THE SAME CONTAINER IN A SECOND TERMINAL
+	# double check that tcopyhe ID is the same in both terminals
+	# this is under koopa
+
+service openvswitch-switch start
+
+might need too do this to install pings
+apt install iputils-ping (?)
+
+exampls ping commands
+c0 ping sw0 (see photos for output - i think he said that this works even without implementing anything yet? not sure tho)
+ping localhost
+server1 ping server2
+
+
+main.cpp
+1. loads the routing table (RTABLE)
+2. loads the ACL table (ATABLE)
+
+Forwarding logic to process the packer is in simple-router.cpp (processPacket - called handlePacket in the spec tho)
+ a) check the checksum of the packet
+ b) check the ethernet header of the packet
+   i) if it is an ARP packet, do something
+	- determine whehter it is a ARP reply or a ARP request (check the Type field)
+		- if it's an ARP request, draft an ARP reply for the sender who sent out the ARP request
+			- send out the reply to the original sender
+		- if it's an ARP reply, use the insertArpEntry to update with the MAC address
+			- send out all the packets that were destined for that MAC address (go throgh the ARP queue) now that we have the MAC address for the destination
+
+   ii) if is an IPv4 packet, do something 
+	- decrement the TTL
+	- longest prefix matching (Routing Table 'lookup' function in routing-table.cpp)
+	- determine which interface the packet needs to be forwarded to 
+	- (perform the ACL table lookup) - output the packet to a file
+	- check the ARP cache lookup - if the switch doesn't have the destination MAC address of the packet, send out ARP request to get the MAC address 
+	- send the packet out
+
+
+
+arp-cache.cpp (periodicCheckArpRequest...)
+ - function that is run by a timer
+ - software executes this factory periodically
+ - check if the requests in the arp-cache are valid
+ - checks the entires in the arp-cache and removes any that have expired
+
+
+traceroute should only be the source and final destination IP address
+server1 traceroute server2 (Unreachable)
+c0 traceroute server2 (see photos for intended output - i think this output should only show if you have implemented everything correctly, but might be different because his implementation is different - should be *** on first line, then destination IP)
+c0 traceroute 10.0.1.1 (this is the IP address of the switch, see photos for output - i think this output should only show if you have implemented everything correctly, but might be different because his implementation is different - should be *** on first line, then destination IP)
+
+
+
